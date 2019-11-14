@@ -71,11 +71,11 @@ then
 fi
 
 # Checks out the base branch to begin the deploy process.
-git checkout "${BASE_BRANCH:-master}" && \
+git checkout "${BRANCH:-master}" && \
 
 # Builds the project if a build script is provided.
-echo "Running build scripts... $BUILD_SCRIPT" && \
-eval "$BUILD_SCRIPT" && \
+# echo "Running build scripts... $BUILD_SCRIPT" && \
+# eval "$BUILD_SCRIPT" && \
 
 if [ "$CNAME" ]; then
   echo "Generating a CNAME file in in the $FOLDER directory..."
@@ -87,6 +87,6 @@ echo "Deploying to GitHub..." && \
 git add -f $FOLDER && \
 
 git commit -m "Deploying to ${BRANCH} from ${BASE_BRANCH:-master} ${GITHUB_SHA}" --quiet && \
-git push $REPOSITORY_PATH `git subtree split --prefix $FOLDER ${BASE_BRANCH:-master}`:$BRANCH --force && \
+git push $REPOSITORY_PATH $BRANCH --force && \
 
 echo "Deployment succesful!"
