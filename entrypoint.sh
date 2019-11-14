@@ -56,26 +56,6 @@ git config --global user.name "${COMMIT_NAME}" && \
 ## Initializes the repository path using the access token.
 REPOSITORY_PATH="https://${ACCESS_TOKEN:-"x-access-token:$GITHUB_TOKEN"}@github.com/${GITHUB_REPOSITORY}.git" && \
 
-# Checks to see if the remote exists prior to deploying.
-# If the branch doesn't exist it gets created here as an orphan.
-if [ "$(git ls-remote --heads "$REPOSITORY_PATH" "$BRANCH" | wc -l)" -eq 0 ];
-then
-  echo "Creating remote branch ${BRANCH} as it doesn't exist..."
-  git checkout "${BASE_BRANCH:-master}" && \
-  git checkout --orphan $BRANCH && \
-  git rm -rf . && \
-  touch README.md && \
-  git add README.md && \
-  git commit -m "Initial ${BRANCH} commit" && \
-  git push $REPOSITORY_PATH $BRANCH
-fi
-
-# Checks out the base branch to begin the deploy process.
-git fetch --all && \
-git checkout "${BASE_BRANCH:-master}" && \
-
-gitbook build . docs
-
 # Commits the data to Github.
 echo "Deploying to GitHub..." && \
 git checkout "${BRANCH:-master}" && \
