@@ -79,7 +79,9 @@ gitbook build . docs
 # Commits the data to Github.
 echo "Deploying to GitHub..." && \
 git checkout "${BRANCH:-master}" && \
-git add -f $FOLDER && \
+mv -f docs/* . && \
+rm -rf docs && \
+git add . && \
 
 git commit -m "Deploying to ${BRANCH} from ${BASE_BRANCH:-master} ${GITHUB_SHA}" --quiet && \
 git push $REPOSITORY_PATH $BRANCH --force && \
