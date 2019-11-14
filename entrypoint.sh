@@ -71,19 +71,14 @@ then
 fi
 
 # Checks out the base branch to begin the deploy process.
-git checkout "${BRANCH:-master}" && \
+git fetch --all && \
+git checkout "${BASE_BRANCH:-master}" && \
 
-# Builds the project if a build script is provided.
-# echo "Running build scripts... $BUILD_SCRIPT" && \
-# eval "$BUILD_SCRIPT" && \
-
-if [ "$CNAME" ]; then
-  echo "Generating a CNAME file in in the $FOLDER directory..."
-  echo $CNAME > $FOLDER/CNAME
-fi
+gitbook build . docs
 
 # Commits the data to Github.
 echo "Deploying to GitHub..." && \
+git checkout "${BRANCH:-master}" && \
 git add -f $FOLDER && \
 
 git commit -m "Deploying to ${BRANCH} from ${BASE_BRANCH:-master} ${GITHUB_SHA}" --quiet && \
