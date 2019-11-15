@@ -59,7 +59,7 @@ REPOSITORY_PATH="https://${ACCESS_TOKEN:-"x-access-token:$GITHUB_TOKEN"}@github.
 # Commits the data to Github.
 echo "Deploying to GitHub..." && \
 git checkout "${BRANCH:-master}" && \
-mv -f docs/* . && \
+mv -un docs/* . && \
 rm -rf docs && \
 git add . && \
 
